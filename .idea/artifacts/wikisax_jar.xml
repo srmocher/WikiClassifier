@@ -1,0 +1,29 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="wikisax:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/wikisax_jar</output-path>
+    <root id="archive" name="wikisax.jar">
+      <element id="module-output" name="wikisax" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/httpcomponents-client-4.5.2/lib/commons-codec-1.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/xerces-2_11_0/xercesSamples.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/httpcomponents-client-4.5.2/lib/httpclient-cache-4.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../Downloads/jsoup-1.9.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/httpcomponents-client-4.5.2/lib/httpclient-4.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/bzip2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/httpcomponents-client-4.5.2/lib/httpclient-win-4.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/xerces-2_11_0/xml-apis.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/xerces-2_11_0/serializer.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/httpcomponents-client-4.5.2/lib/fluent-hc-4.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lucene-5.1.0/analysis/common/lucene-analyzers-common-5.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/httpcomponents-client-4.5.2/lib/httpmime-4.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/xerces-2_11_0/resolver.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lucene-5.1.0/core/lucene-core-5.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/httpcomponents-client-4.5.2/lib/commons-logging-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lucene-5.1.0/queryparser/lucene-queryparser-5.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/commons-compress-1.12/commons-compress-1.12.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/httpcomponents-client-4.5.2/lib/jna-4.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/httpcomponents-client-4.5.2/lib/httpcore-4.4.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/httpcomponents-client-4.5.2/lib/jna-platform-4.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/xerces-2_11_0/xercesImpl.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
