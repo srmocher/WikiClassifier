@@ -1,31 +1,24 @@
 package com.teachastronomy.lucene;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import com.teachastronomy.Constants;
-
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.SimpleFSDirectory;
-import org.w3c.dom.Text;
 
 import java.io.*;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 /**
  * Created by sridh on 10/4/2016.
  */
 public class LuceneIndexer {
 
-    IndexWriter writer;
     //static String indexPath = "/tadata/ewap/legacy/WikiParser/Indexes";
     public CharArraySet stopWords;
+    IndexWriter writer;
     public LuceneIndexer(String indexFolder, String dirName){
         stopWords = new CharArraySet(20,true);
        // readStopWords();

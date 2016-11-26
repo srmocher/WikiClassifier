@@ -1,7 +1,6 @@
 package com.teachastronomy.wikipedia;
 
 import com.teachastronomy.Logger;
-import com.teachastronomy.wikipedia.WikiPageHandler;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 
 import javax.xml.XMLConstants;

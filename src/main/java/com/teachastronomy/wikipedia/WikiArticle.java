@@ -13,11 +13,11 @@ import java.util.ArrayList;
  * Created by sridh on 10/4/2016.
  */
 public class WikiArticle {
+    public ArrayList<WikiImage> images;
     String text;
     String id;
     String title;
     String timestamp;
-    public ArrayList<WikiImage> images;
     String category;
 
     public WikiArticle(String txt,String id,String ttl,String timestamp){
@@ -28,9 +28,6 @@ public class WikiArticle {
         images = new ArrayList<>();
     }
 
-    public void setCategory(String category){
-        this.category = category;
-    }
     public String getText(){
         return this.text;
     }
@@ -46,6 +43,11 @@ public class WikiArticle {
     public String getCategory(){
         return this.category;
     }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public String getTimestamp(){
         return  this.timestamp;
     }
