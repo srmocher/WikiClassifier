@@ -8,13 +8,13 @@ import com.teachastronomy.lucene.LuceneIndexer;
 import com.teachastronomy.lucene.LuceneReader;
 import com.teachastronomy.wikipedia.WikiArticle;
 import javafx.scene.chart.ScatterChart;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.XYSeries;
-import org.knowm.xchart.style.Styler;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -49,7 +49,7 @@ public class WikiPageHandler extends DefaultHandler {
 
     Pattern pattern = Pattern.compile("\\[\\[File:.*\\]\\]");
 
-    LuceneIndexer indexer;
+    LuceneIndexer indexer,titleIndexer;
    // NBMultinomialTextClassifier classifier;
     //LogisticRegressionClassifier classifier;
     LuceneReader reader;
@@ -78,21 +78,28 @@ public class WikiPageHandler extends DefaultHandler {
             nast_probs = new ArrayList<>();
 //          //  classifier = new NaiveBayesBernoulli(classes);
 //
+            excelLogger = new Logger();
             classifier = new NaiveBayesClassifier(classes);
             classifier.train(TrainingDataHelper.getTrainingData());
-            String filename = "Project Mercury";
-            String text = new String(Files.readAllBytes(Paths.get("/home/sridhar/Desktop/TestData/"+filename)));
-            WikiArticle art = new WikiArticle(text,null,filename,null);
-            classifier.classify(art);
+            ArrayList<WikiArticle> articles = TrainingDataHelper.getTrainingData();
+            for(WikiArticle article:articles)
+            {
+                System.out.println(article.getTitle()+"-"+classifier.classify(article));
+            }
+           // String filename = "Project Mercury";
+         //   String text = new String(Files.readAllBytes(Paths.get("/home/sridhar/Desktop/TestData/"+filename)));
+           // WikiArticle art = new WikiArticle(text,null,filename,null);
+            //classifier.classify(art);
           //  classifier.trainUsingWEKA();
-            indexer = new LuceneIndexer(Constants.MainIndexLocation, "astronomyIndex2");
+            indexer = new LuceneIndexer(Constants.MainIndexLocation, "astronomyIndex");
+            titleIndexer = new LuceneIndexer(Constants.MainIndexLocation, "titleIndex");
             n_ast = 0;
             n_nast = 0;
             count=0;
-            excelLogger = new Logger();
-            reader = new LuceneReader(Constants.MainIndexLocation + "/astronomyIndex2");
-            astroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Constants.astroLogFile)));
-            nonAstroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Constants.nonAstroLogFile)));
+
+          //  reader = new LuceneReader(Constants.MainIndexLocation + "/astronomyIndex2");
+//            astroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Constants.astroLogFile)));
+   //         nonAstroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Constants.nonAstroLogFile)));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,14 +174,7 @@ public class WikiPageHandler extends DefaultHandler {
 //            }
         }
         if (qName.equals("page")) {
-//
-//            if(astroDocTitles.contains(ttl)){
-//                return;
-//            }
-//            else if(nonAstroDocTitles.contains(ttl)){
-//                return;
-//            }
-//            HashMap<String, ArrayList<Double>> condProb = new HashMap<String, ArrayList<Double>>();
+
             count++;
 
             WikiArticle article = new WikiArticle(articleText, ID, ttl, time);
@@ -202,36 +202,42 @@ public class WikiPageHandler extends DefaultHandler {
                         if (result.equals("Astronomy")) {
                            System.out.println(ttl+" - "+probs[0]+","+probs[1]);
                             n_ast++;//Increment astronomy count
-                            excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],decision);
-//                        Document d = new Document();
-//                        d.add(new StringField("id", ID, Field.Store.YES));
-//                        d.add(new StringField("title", ttl, Field.Store.YES));
-//                        d.add(new TextField("text", articleText, Field.Store.YES));
-//                        d.add(new StringField("timestamp", time, Field.Store.YES));
+                               //excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],decision);
+                        Document d = new Document();
+                        d.add(new StringField("id", ID, Field.Store.YES));
+                        d.add(new StringField("title", ttl, Field.Store.YES));
+                        d.add(new TextField("text", articleText, Field.Store.YES));
+                        d.add(new StringField("timestamp", time, Field.Store.YES));
 
-                            //     indexer.saveDocument(d);
-                            //     astroWriter.write(ttl + "\n");
+                                 indexer.saveDocument(d);
+
+                            Document titleDoc = new Document();
+                            titleDoc.add(new StringField("id",ID,Field.Store.YES));
+                            titleDoc.add(new StringField("title",ttl,Field.Store.YES));
+                            titleIndexer.saveDocument(titleDoc);
+                             //  astroWriter.write(ttl + ","+probs[0]+","+probs[1]+"\n");
                         } else {
-                                 nonAstroWriter.write(ttl +","+probs[0]+","+probs[1]+"\n");
+                             //    nonAstroWriter.write(ttl +","+probs[0]+","+probs[1]+"\n");
+                          //  excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],0);
                             n_nast++;//Increment non astronomy count
                         }
 
 
                     } else if (res == 1) { // Infobox article
                        // ClassificationResult result = classifier.classify(article);
-//                    Document d = new Document();
-//                    d.add(new StringField("id", ID, Field.Store.YES));
-//                    d.add(new StringField("title", ttl, Field.Store.YES));
-//                    d.add(new TextField("text", articleText, Field.Store.YES));
-//                    d.add(new StringField("timestamp", time, Field.Store.YES));
-//                    indexer.saveDocument(d);
+                    Document d = new Document();
+                    d.add(new StringField("id", ID, Field.Store.YES));
+                    d.add(new StringField("title", ttl, Field.Store.YES));
+                    d.add(new TextField("text", articleText, Field.Store.YES));
+                    d.add(new StringField("timestamp", time, Field.Store.YES));
+                    indexer.saveDocument(d);
 //                    astroWriter.write(ttl + "\n");
-                        System.out.println(ttl+" - "+probs[0]+","+probs[1]);
-                        excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],1);//write probabilities
-                        n_ast++;//increment count
+                        System.out.println(ttl+" - "+probs[0]+","+probs[1]+" Infobox");
+                        //excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],1);//write probabilities
+                      //  n_ast++;//increment count
                     } else {
-//                    nonAstroWriter.write(ttl+"\n");
-                        n_nast++;
+                //   nonAstroWriter.write(ttl+"\n");
+                      // n_nast++;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -242,53 +248,19 @@ public class WikiPageHandler extends DefaultHandler {
 
     }
 
-    private void createScatterPlot() {
-        // Create Chart
-        XYChart chart = new XYChartBuilder().width(800).height(600).build();
-
-        // Customize Chart
-        chart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Scatter);
-        chart.getStyler().setChartTitleVisible(false);
-        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideSW);
-        chart.getStyler().setMarkerSize(16);
-
-        // Series
-        List<Double> xData1 = new LinkedList<Double>();
-        List<Double> yData1 = new LinkedList<Double>();
-
-        List<Double> xData2 = new LinkedList<Double>();
-        List<Double> yData2 = new LinkedList<Double>();
-
-        for (int i = 0; i < ast_probs.size(); i++) {
-            if(ast_probs.get(i)>nast_probs.get(i)) {
-                xData1.add(ast_probs.get(i));
-                yData1.add(nast_probs.get(i));
-            }
-            else{
-                xData2.add(ast_probs.get(i));
-                yData2.add(nast_probs.get(i));
-            }
-        }
-
-        chart.addSeries("Astronomy",xData1,yData1);
-        chart.addSeries("Non Astronomy",xData2,yData2);
-
-       // ScatterChart exampleChart = new ScatterChart();
-
-        new SwingWrapper<XYChart>(chart).displayChart();
-    }
 
 
     @Override
     public void endDocument() throws SAXException {
-        //indexer.close();
+        indexer.close();
+        titleIndexer.close();
         System.out.println("Total astronomy - " + n_ast);
         System.out.println("Total non astronomy - " + n_nast);
         System.out.println("Total infoboxes "+n_infoboxes);
         try {
-            astroWriter.close();
-            nonAstroWriter.close();
-            excelLogger.saveExcel();
+//    astroWriter.close();
+         //  nonAstroWriter.close();
+           excelLogger.saveExcel();
          //   classifier.closeLogger();;
         } catch (Exception e) {
             e.printStackTrace();
@@ -311,7 +283,7 @@ public class WikiPageHandler extends DefaultHandler {
         if(title.startsWith("File:")||title.startsWith("Wikipedia:")||title.startsWith("Template:")||title.startsWith("Category:")||title.startsWith("Portal:")||title.startsWith("MediaWiki:")||title.startsWith("Book:")||title.startsWith("Draft:")||title.startsWith("Help:"))
             return -1;
 
-        if (text.toLowerCase().startsWith("#redirect")||text.toLowerCase().contains("#REDIRECT[[") || text.contains("{{disambiguation")
+        if (text.toLowerCase().startsWith("#redirect")|| text.contains("{{disambiguation")
                 || text.contains("{{hndis")) {
             return -1;
         } else if (text.contains("{{Infobox")) {

@@ -62,7 +62,7 @@ public class Logger {
 
     public void saveExcel(){
         try{
-            FileOutputStream excelFile = new FileOutputStream("/home/sridhar/Desktop/Articles.xlsx");
+            FileOutputStream excelFile = new FileOutputStream("C:\\Users\\sridh\\Desktop\\Articles.xlsx");
             workbook.write(excelFile);
             excelFile.close();
         }

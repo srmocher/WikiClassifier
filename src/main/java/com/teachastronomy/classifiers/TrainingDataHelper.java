@@ -1,15 +1,28 @@
 package com.teachastronomy.classifiers;
 
 import com.teachastronomy.Constants;
+import com.teachastronomy.TextConverter;
+import com.teachastronomy.transformers.TfIdfTransformer;
 import com.teachastronomy.wikipedia.WikiArticle;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.index.Term;
+import org.sweble.wikitext.engine.EngineException;
+import org.sweble.wikitext.engine.PageId;
+import org.sweble.wikitext.engine.PageTitle;
+import org.sweble.wikitext.engine.WtEngineImpl;
+import org.sweble.wikitext.engine.config.WikiConfig;
+import org.sweble.wikitext.engine.nodes.EngProcessedPage;
+import org.sweble.wikitext.engine.utils.DefaultConfigEnWp;
+import org.sweble.wikitext.parser.parser.LinkTargetException;
 import org.tartarus.snowball.ext.PorterStemmer;
+import sun.awt.image.ImageWatched;
 import weka.core.*;
+import weka.core.tokenizers.WordTokenizer;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by root on 10/27/16.
@@ -20,37 +33,33 @@ public class TrainingDataHelper {
 
     public static void buildAstInstances(Instances trainingSet){
         try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Constants.astroTitlesFilePath)));
-            String s;
-            while((s=br.readLine())!=null){
-                String text = new String(Files.readAllBytes(Paths.get(Constants.astroTrainingDataPath+s+".txt")));
+            File[] files = new File("/home/sridhar/TrainingData/CS").listFiles();
+            for(File f:files) {
+                String s = f.getName();
+                //  s=s.replace(" ","_");
+                String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
                 Instance inst = new DenseInstance(3);
                 inst.setDataset(trainingSet);
+              //  text = text.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
+                 text = text.replaceAll("\\}","").replaceAll("\\{","").replaceAll("\\[","");
+                   text = text.replaceAll("\\{", " ").replaceAll("\\}"," ");
+//                text = TrainingDataHelper.removeStopWords(text);
 
-              //  String text = new String(Files.readAllBytes(Paths.get("/home/sridhar/Desktop/TestData/"+title)));
-                text = text.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
-          //      text = text.replaceAll("\\{", " ").replaceAll("}"," ");
-              //  text = TrainingDataHelper.removeStopWords(text);
-
-
+                text = removeStopWords(text);
                 text = stem(text);
 
-                s= s.replaceAll("[^ a-zA-Z]", " ");
-           //    s= TrainingDataHelper.removeStopWords(s);
+                s = s.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
+                ;
+                //   s= TrainingDataHelper.removeStopWords(s);
 
 
                 s = stem(s);
-                inst.setValue(0,s);
-
-                //     text = text.toLowerCase();
-
-                   // text = text.replaceAll("(<ref>).*?(<\\/ref>)", " ");
-                            // .replaceAll("[^a-z]", " ");
-
-                inst.setValue(1,text);
-                inst.setClassValue("Astronomy");
+                inst.setValue(0, s);
+                inst.setValue(1, text);
+                inst.setClassValue("CS");
                 trainingSet.add(inst);
             }
+
         }
         catch (Exception e){
             e.printStackTrace();
@@ -59,20 +68,21 @@ public class TrainingDataHelper {
 
     public static void buildNonAstInstances(Instances trainingSet){
         try{
-            File[] files = new File("/home/sridhar/Desktop/TrainingData/New").listFiles();
+            File[] files = new File("/home/sridhar/TrainingData/NCS").listFiles();
             for(File f:files) {
                     String s = f.getName();
                     //  s=s.replace(" ","_");
                     String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
                     Instance inst = new DenseInstance(3);
                     inst.setDataset(trainingSet);
-                    text = text.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
-                    //  text = text.replaceAll("\\}","").replaceAll("\\{","").replaceAll("\\[","");
-                    //   text = text.replaceAll("\\{", " ").replaceAll("\\}"," ");
+                   // text = text.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
+                      text = text.replaceAll("\\}","").replaceAll("\\{","").replaceAll("\\[","");
+                       text = text.replaceAll("\\{", " ").replaceAll("\\}"," ");
 //                text = TrainingDataHelper.removeStopWords(text);
 
-
+                    text = removeStopWords(text);
                     text = stem(text);
+
 
                     s = s.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
                     ;
@@ -97,8 +107,8 @@ public class TrainingDataHelper {
       //  titleAttribute.setWeight(2);
         Attribute textAttribute = new Attribute("text",(FastVector)null);
         ArrayList<String> classes = new ArrayList<>();
-        classes.add(Constants.astronomy);
-        classes.add(Constants.nonAstronomy);
+        classes.add("Astronomy");
+        classes.add("Non Astronomy");
         Attribute classAttribute = new Attribute("@@class@@",classes);
         ArrayList<Attribute> attributes = new ArrayList<>();
         attributes.add(titleAttribute);
@@ -151,23 +161,24 @@ public class TrainingDataHelper {
         ArrayList<WikiArticle> articles = new ArrayList<>();
         try {
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Constants.astroTitlesFilePath)));
-            String s;
-            while ((s = br.readLine()) != null) {
-                String text = new String(Files.readAllBytes(Paths.get(Constants.astroTrainingDataPath + s + ".txt")));
-                WikiArticle article = new WikiArticle(text,null,s,null);
+            File[] files = new File("F:\\TrainingData\\A").listFiles();
+
+            for(File f:files){
+                String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
+                WikiArticle article = new WikiArticle(text,null,f.getName(),null);
                 article.setCategory("Astronomy");
                 articles.add(article);
             }
-            br.close();
 
-            File[] files = new File("/home/sridhar/Desktop/TrainingData/NA").listFiles();
-
+             files = new File("F:\\TrainingData\\NA").listFiles();
+            int j=0;
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
                 WikiArticle article = new WikiArticle(text,null,f.getName(),null);
                 article.setCategory("Non Astronomy");
                 articles.add(article);
+                j++;
+
             }
 
         }
@@ -177,4 +188,47 @@ public class TrainingDataHelper {
         return articles;
     }
 
+
+
+    private static String convertWikiText(String title, String wikiText, int maxLineLength) {
+        try {
+            if(title.equals("")|| wikiText.equals("")){
+                System.out.println(title+" "+wikiText);
+            }
+            // Set-up a simple wiki configuration
+            WikiConfig config = DefaultConfigEnWp.generate();
+            // Instantiate a compiler for wiki pages
+            WtEngineImpl engine = new WtEngineImpl(config);
+            // Retrieve a page
+            PageTitle pageTitle = PageTitle.make(config, title);
+            PageId pageId = new PageId(pageTitle, -1);
+            // Compile the retrieved page
+            EngProcessedPage cp = engine.postprocess(pageId, wikiText, null);
+            TextConverter p = new TextConverter(config, maxLineLength);
+            return (String) p.go(cp.getPage());
+        }
+        catch (EngineException ee){
+            ee.printStackTrace();;
+        }
+        catch (LinkTargetException lte){
+            lte.printStackTrace();
+        }
+        return null;
+    }
+
 }
+
+
+
+class WikiDocument
+{
+    public Hashtable<String,Integer> wordCounts;
+    public String category;
+
+    public WikiDocument(Hashtable<String,Integer> ht,String cat)
+    {
+        this.wordCounts = ht;
+        this.category=cat;
+    }
+}
+

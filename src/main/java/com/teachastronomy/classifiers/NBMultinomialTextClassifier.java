@@ -32,8 +32,8 @@ public class NBMultinomialTextClassifier {
 
     public NBMultinomialTextClassifier() throws IOException{
         excelLogger = new Logger();
-        bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/sridhar/Desktop/NAProbs.txt",true)));
-        bw1 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/sridhar/Desktop/AProbs.txt",true)));
+       // bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/sridhar/Desktop/NAProbs.txt",true)));
+        //bw1 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/sridhar/Desktop/AProbs.txt",true)));
     }
 
 
@@ -49,37 +49,13 @@ public class NBMultinomialTextClassifier {
         TrainingDataHelper.buildNonAstInstances(trainingSet);
         try {
 
-            classifier.setMinWordFrequency(5);
+     //       classifier.setMinWordFrequency(5);
             classifier.setLowercaseTokens(true);
             classifier.setUseWordFrequencies(true);
-            classifier.setStopwordsHandler(new CustomStopWordsHandler());
+          //  classifier.setStopwordsHandler(new CustomStopWordsHandler());
             classifier.buildClassifier(trainingSet);
 
-            Instance testInstance = new DenseInstance(3);
-            Instances testInstances = new Instances("TestSet",attributes,0);
-            testInstances.setClassIndex(testInstances.numAttributes()-1);
-            String title = "Neptune";
 
-            String text = new String(Files.readAllBytes(Paths.get("/home/sridhar/Desktop/TestData/"+title)));
-                text = text.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
-            text = text.replaceAll("\\{", " ").replaceAll("}"," ");
-
-       //    text = TrainingDataHelper.removeStopWords(text);
-
-
-            text = stem(text);
-
-          title = title.replaceAll("[^ a-zA-Z]", " ");
-         //   title = TrainingDataHelper.removeStopWords(title);
-
-
-            title = stem(title);
-            testInstance.setDataset(testInstances);
-            testInstance.setValue(0,title);
-            testInstance.setValue(1,text);
-
-            testInstances.add(testInstance);
-            System.out.println(attributes.get(2).value((int)classifier.classifyInstance(testInstance)));
          //   double[] probs = classifier.getLogNormalizedProbablities();
          //   System.out.println(probs[0]);
         }
@@ -97,12 +73,12 @@ public class NBMultinomialTextClassifier {
         String title = article.getTitle();
         Instance testInstance = new DenseInstance(testSet.numAttributes());
         testInstance.setDataset(testSet);
-        text = text.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
-      //  text = text.replaceAll("\\{", " ").replaceAll("}"," ");
+       // text = text.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
+       text = text.replaceAll("\\{", " ").replaceAll("}"," ");
     //    text = TrainingDataHelper.removeStopWords(text);
 
 
-        text = stem(text);
+       // text = stem(text);
 
        title = title.replaceAll("[^ a-zA-Z]", " ");
       //  title = TrainingDataHelper.removeStopWords(title);
@@ -118,9 +94,9 @@ public class NBMultinomialTextClassifier {
             double[] probs = classifier.distributionForInstance(testInstance);
 
             if(result.equals("Astronomy")) {
-                excelLogger.writeToExcelSheet(article.getTitle(),probs[0],probs[1],1);
-                bw1.write(probs[0]+","+probs[1]+"\n");
-                bw1.flush();
+           //     excelLogger.writeToExcelSheet(article.getTitle(),probs[0],probs[1],1);
+             //   bw1.write(probs[0]+","+probs[1]+"\n");
+              //  bw1.flush();
             //    System.out.println(article.getTitle()+ " A "+(probs[0])+","+probs[1]);
 
                 return ClassificationResult.Astronomy;
@@ -129,7 +105,7 @@ public class NBMultinomialTextClassifier {
             else {
             //    System.out.println(article.getTitle()+ " NA "+(1-probs[0]));
 
-                bw.write(article.getTitle()+","+probs[0]+","+probs[1]+"\n");
+             //   bw.write(article.getTitle()+","+probs[0]+","+probs[1]+"\n");
                 return ClassificationResult.NonAstronomy;
             }
         }

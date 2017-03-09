@@ -3,6 +3,7 @@
     <properties maven-id="org.apache.commons:commons-compress:1.12" />
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

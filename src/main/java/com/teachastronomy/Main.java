@@ -1,6 +1,14 @@
 package com.teachastronomy;
 
+import com.teachastronomy.classifiers.ClassificationResult;
+import com.teachastronomy.classifiers.NBMultinomialTextClassifier;
+import com.teachastronomy.classifiers.NaiveBayesClassifier;
+import com.teachastronomy.classifiers.TrainingDataHelper;
 import com.teachastronomy.wikipedia.ParsingHelper;
+
+import com.teachastronomy.wikipedia.WikiArticle;
+
+
 import org.sweble.wikitext.engine.EngineException;
 import org.sweble.wikitext.engine.PageId;
 import org.sweble.wikitext.engine.PageTitle;
@@ -10,73 +18,19 @@ import org.sweble.wikitext.engine.nodes.EngProcessedPage;
 import org.sweble.wikitext.engine.utils.DefaultConfigEnWp;
 import org.sweble.wikitext.parser.parser.LinkTargetException;
 
-import java.io.File;
-
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 
 public class Main {
 
 
     public static void main(String[] args) {
-
+      //  TrainingDataHelper.getTrainingVector();
         ParsingHelper.parseDump(new File(Constants.DumpFileLocation));
-//        try {
-//            ArrayList<String> articles = new ArrayList<>();
-//            XSSFWorkbook book = new XSSFWorkbook(new File("/home/sridhar/Desktop/Test.xlsx"));
-//            XSSFSheet sheet = book.getSheetAt(0);
-//            int i=1;
-//            while(articles.size()<=1000)
-//            {
-//                XSSFRow row = sheet.getRow(i);
-//                String title = row.getCell(0).getStringCellValue();
-//                i++;
-//                if(row.getCell(1)!=null && row.getCell(1).getNumericCellValue()==1) {
-//                    continue;
-//                }
-//
-//                articles.add(title);
-//            }
-//
-//            i=0;
-//            CloseableHttpClient client = HttpClients.createDefault();
-//            for(String article:articles){
-//                FileOutputStream fos;
-//                CloseableHttpResponse response;
-//                try {
-//                    if(i%50==0)
-//                        Thread.sleep(1000);
-//                    if(i<772) {
-//                        i++;
-//                        continue;
-//                    }
-//                article = article.replaceAll(" ","_");
-//                HttpGet getter = new HttpGet("https://en.wikipedia.org/wiki/"+article+"?action=raw");
-//                response = client.execute(getter);
-//                HttpEntity entity1 = response.getEntity();
-//                String text = convertStreamToString(entity1.getContent());
-//
-//
-//                    fos = new FileOutputStream("/home/sridhar/Desktop/TrainingData/New/" + article + ".txt");
-//                    fos.write(text.getBytes());
-//                    fos.close();
-//                    response.close();
-//                    i++;
-//                }
-//                catch (Exception e){
-//                    e.printStackTrace();
-//                    continue;
-//                }
-//
-//
-//            }
-//            client.close();
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
-
-
-
+       // evaluate();
     }
 
     static String convertStreamToString(java.io.InputStream is) {
@@ -86,7 +40,7 @@ public class Main {
     public static String convertWikiText(String title, String wikiText, int maxLineLength) throws LinkTargetException,EngineException {
         // Set-up a simple wiki configuration
         WikiConfig config = DefaultConfigEnWp.generate();
-        // Instantiate a compiler for wiki pages
+        // Instantiate a compiler for wiki pagesi
         WtEngineImpl engine = new WtEngineImpl(config);
         // Retrieve a page
         PageTitle pageTitle = PageTitle.make(config, title);
@@ -97,9 +51,32 @@ public class Main {
         return (String)p.go(cp.getPage());
     }
 
+    public static void evaluate(){
+        try {
 
-
-
-
+            ArrayList<String> classes = new ArrayList<>();
+            classes.add("Astronomy");
+            classes.add("Non Astronomy");
+            NaiveBayesClassifier classifier = new NaiveBayesClassifier(classes);
+            classifier.train(TrainingDataHelper.getTrainingData());
+            File[] dataset = new File("F:\\Evaluation").listFiles();
+            ArrayList<com.teachastronomy.wikipedia.WikiArticle> articles = new ArrayList<>();
+            for(File file:dataset){
+                String title = file.getName();
+                String text = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+                com.teachastronomy.wikipedia.WikiArticle article = new com.teachastronomy.wikipedia.WikiArticle(text,null,title,null);
+                articles.add(article);
+            }
+            for(WikiArticle article:articles){
+                String res = classifier.classify(article);
+                System.out.println(article.getTitle()+" - "+res);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
+
+
 
