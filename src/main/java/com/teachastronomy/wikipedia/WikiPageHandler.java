@@ -50,9 +50,7 @@ public class WikiPageHandler extends DefaultHandler {
     Pattern pattern = Pattern.compile("\\[\\[File:.*\\]\\]");
 
     LuceneIndexer indexer,titleIndexer;
-   // NBMultinomialTextClassifier classifier;
-    //LogisticRegressionClassifier classifier;
-    LuceneReader reader;
+
     NaiveBayesClassifier classifier; //multinomial model naive bayes
 
 
@@ -78,7 +76,7 @@ public class WikiPageHandler extends DefaultHandler {
             nast_probs = new ArrayList<>();
 //          //  classifier = new NaiveBayesBernoulli(classes);
 //
-            excelLogger = new Logger();
+          //  excelLogger = new Logger();
             classifier = new NaiveBayesClassifier(classes);
             classifier.train(TrainingDataHelper.getTrainingData());
             ArrayList<WikiArticle> articles = TrainingDataHelper.getTrainingData();
@@ -86,11 +84,7 @@ public class WikiPageHandler extends DefaultHandler {
             {
                 System.out.println(article.getTitle()+"-"+classifier.classify(article));
             }
-           // String filename = "Project Mercury";
-         //   String text = new String(Files.readAllBytes(Paths.get("/home/sridhar/Desktop/TestData/"+filename)));
-           // WikiArticle art = new WikiArticle(text,null,filename,null);
-            //classifier.classify(art);
-          //  classifier.trainUsingWEKA();
+
             indexer = new LuceneIndexer(Constants.MainIndexLocation, "astronomyIndex");
             titleIndexer = new LuceneIndexer(Constants.MainIndexLocation, "titleIndex");
             n_ast = 0;
@@ -102,7 +96,7 @@ public class WikiPageHandler extends DefaultHandler {
    //         nonAstroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Constants.nonAstroLogFile)));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -231,6 +225,11 @@ public class WikiPageHandler extends DefaultHandler {
                     d.add(new TextField("text", articleText, Field.Store.YES));
                     d.add(new StringField("timestamp", time, Field.Store.YES));
                     indexer.saveDocument(d);
+                        Document titleDoc = new Document();
+                        titleDoc.add(new StringField("id",ID,Field.Store.YES));
+                        titleDoc.add(new StringField("title",ttl,Field.Store.YES));
+                        titleIndexer.saveDocument(titleDoc);
+
 //                    astroWriter.write(ttl + "\n");
                         System.out.println(ttl+" - "+probs[0]+","+probs[1]+" Infobox");
                         //excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],1);//write probabilities
@@ -240,7 +239,7 @@ public class WikiPageHandler extends DefaultHandler {
                       // n_nast++;
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                   System.out.println(e.getMessage());
                 }
 
         }
@@ -260,10 +259,10 @@ public class WikiPageHandler extends DefaultHandler {
         try {
 //    astroWriter.close();
          //  nonAstroWriter.close();
-           excelLogger.saveExcel();
+          // excelLogger.saveExcel();
          //   classifier.closeLogger();;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -280,7 +279,7 @@ public class WikiPageHandler extends DefaultHandler {
     }
 
     private int  validateTitleAndText(String title,String text) {
-        if(title.startsWith("File:")||title.startsWith("Wikipedia:")||title.startsWith("Template:")||title.startsWith("Category:")||title.startsWith("Portal:")||title.startsWith("MediaWiki:")||title.startsWith("Book:")||title.startsWith("Draft:")||title.startsWith("Help:"))
+        if(title.startsWith("File:")||title.startsWith("Wikipedia:")||title.startsWith("Template:")||title.startsWith("Category:")||title.startsWith("Portal:")||title.startsWith("MediaWiki:")||title.startsWith("Book:")||title.startsWith("Draft:")||title.startsWith("Help:")||title.startsWith("Module:"))
             return -1;
 
         if (text.toLowerCase().startsWith("#redirect")|| text.contains("{{disambiguation")

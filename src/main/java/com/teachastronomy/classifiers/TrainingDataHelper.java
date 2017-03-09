@@ -161,7 +161,7 @@ public class TrainingDataHelper {
         ArrayList<WikiArticle> articles = new ArrayList<>();
         try {
 
-            File[] files = new File("F:\\TrainingData\\A").listFiles();
+            File[] files = new File("/home/sridhar/TrainingData/A").listFiles();
 
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
@@ -170,7 +170,7 @@ public class TrainingDataHelper {
                 articles.add(article);
             }
 
-             files = new File("F:\\TrainingData\\NA").listFiles();
+             files = new File("/home/sridhar/TrainingData/NA").listFiles();
             int j=0;
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
