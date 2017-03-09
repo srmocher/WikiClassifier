@@ -7,7 +7,6 @@ import com.teachastronomy.classifiers.*;
 import com.teachastronomy.lucene.LuceneIndexer;
 import com.teachastronomy.lucene.LuceneReader;
 import com.teachastronomy.wikipedia.WikiArticle;
-import javafx.scene.chart.ScatterChart;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
