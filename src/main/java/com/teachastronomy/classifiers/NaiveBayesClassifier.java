@@ -4,14 +4,7 @@ import com.teachastronomy.TextConverter;
 import com.teachastronomy.transformers.TfIdfTransformer;
 import com.teachastronomy.wikipedia.WikiArticle;
 import org.apache.commons.collections4.IterableGet;
-import org.sweble.wikitext.engine.EngineException;
-import org.sweble.wikitext.engine.PageId;
-import org.sweble.wikitext.engine.PageTitle;
-import org.sweble.wikitext.engine.WtEngineImpl;
-import org.sweble.wikitext.engine.config.WikiConfig;
-import org.sweble.wikitext.engine.nodes.EngProcessedPage;
-import org.sweble.wikitext.engine.utils.DefaultConfigEnWp;
-import org.sweble.wikitext.parser.parser.LinkTargetException;
+
 import org.tartarus.snowball.ext.PorterStemmer;
 import weka.core.tokenizers.WordTokenizer;
 
@@ -439,29 +432,5 @@ public class NaiveBayesClassifier {
         return stemmer.getCurrent();
     }
 
-    private static String convertWikiText(String title, String wikiText, int maxLineLength) {
-        try {
-            if(title.equals("")|| wikiText.equals("")){
-                System.out.println(title+" "+wikiText);
-            }
-            // Set-up a simple wiki configuration
-            WikiConfig config = DefaultConfigEnWp.generate();
-            // Instantiate a compiler for wiki pages
-            WtEngineImpl engine = new WtEngineImpl(config);
-            // Retrieve a page
-            PageTitle pageTitle = PageTitle.make(config, title);
-            PageId pageId = new PageId(pageTitle, -1);
-            // Compile the retrieved page
-            EngProcessedPage cp = engine.postprocess(pageId, wikiText, null);
-            TextConverter p = new TextConverter(config, maxLineLength);
-            return (String) p.go(cp.getPage());
-        }
-        catch (EngineException ee){
-            ee.printStackTrace();;
-        }
-        catch (LinkTargetException lte){
-            lte.printStackTrace();
-        }
-        return null;
-    }
+
 }

@@ -8,16 +8,6 @@ import com.teachastronomy.wikipedia.ParsingHelper;
 
 import com.teachastronomy.wikipedia.WikiArticle;
 
-
-import org.sweble.wikitext.engine.EngineException;
-import org.sweble.wikitext.engine.PageId;
-import org.sweble.wikitext.engine.PageTitle;
-import org.sweble.wikitext.engine.WtEngineImpl;
-import org.sweble.wikitext.engine.config.WikiConfig;
-import org.sweble.wikitext.engine.nodes.EngProcessedPage;
-import org.sweble.wikitext.engine.utils.DefaultConfigEnWp;
-import org.sweble.wikitext.parser.parser.LinkTargetException;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -36,19 +26,6 @@ public class Main {
     static String convertStreamToString(java.io.InputStream is) {
         java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
-    }
-    public static String convertWikiText(String title, String wikiText, int maxLineLength) throws LinkTargetException,EngineException {
-        // Set-up a simple wiki configuration
-        WikiConfig config = DefaultConfigEnWp.generate();
-        // Instantiate a compiler for wiki pagesi
-        WtEngineImpl engine = new WtEngineImpl(config);
-        // Retrieve a page
-        PageTitle pageTitle = PageTitle.make(config, title);
-        PageId pageId = new PageId(pageTitle, -1);
-        // Compile the retrieved page
-        EngProcessedPage cp = engine.postprocess(pageId, wikiText, null);
-        TextConverter p = new TextConverter(config, maxLineLength);
-        return (String)p.go(cp.getPage());
     }
 
     public static void evaluate(){
