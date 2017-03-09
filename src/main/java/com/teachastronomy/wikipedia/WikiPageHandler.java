@@ -63,6 +63,8 @@ public class WikiPageHandler extends DefaultHandler {
 
     public WikiPageHandler() {
         try {
+            indexer = new LuceneIndexer(Constants.MainIndexLocation, "astronomyIndex");
+            titleIndexer = new LuceneIndexer(Constants.MainIndexLocation, "titleIndex");
 
             articles = new ArrayList<>();
             count=0;
@@ -84,8 +86,6 @@ public class WikiPageHandler extends DefaultHandler {
                 System.out.println(article.getTitle()+"-"+classifier.classify(article));
             }
 
-            indexer = new LuceneIndexer(Constants.MainIndexLocation, "astronomyIndex");
-            titleIndexer = new LuceneIndexer(Constants.MainIndexLocation, "titleIndex");
             n_ast = 0;
             n_nast = 0;
             count=0;

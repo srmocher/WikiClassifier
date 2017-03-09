@@ -5,7 +5,7 @@ package com.teachastronomy;
  */
 public class Constants {
 
-    public static final String MainIndexLocation = "/home/Indexes";
+    public static final String MainIndexLocation = "/home/sridhar/Indexes";
     public static final String TitleIndexLocation = "/home/sridhar/Indexes";
     public static final String stopWordsFilePath ="/home/sridhar/stopWords.txt";
 
