@@ -208,11 +208,10 @@ public class NaiveBayesClassifier {
         Hashtable<String,Integer> words = new Hashtable<>();
         while(tokenizer.hasMoreElements()){
             String word = tokenizer.nextElement();
-            if(handler.isStopword(word)||word.length()<2)
+            if(handler.isStopword(word))
                 continue;
             word = stem(word);
-            if(word.length()<2)
-                continue;
+
             if(!words.containsKey(word)){
                 words.put(word,1);
             }
@@ -250,21 +249,21 @@ public class NaiveBayesClassifier {
 //                    counts.remove(word);
 //            }
 //        }
-        for(int i=0;i<classes.size();i++)
-        {
-            LinkedHashMap<String,Double> map = this.wordCounts.get(classes.get(i));
-            Iterator<Map.Entry<String,Double>> it = map.entrySet().iterator();
-            HashSet<String> classwords = this.classDictionary.get(classes.get(i));
-            while(it.hasNext()){
-                Map.Entry<String,Double> entry = it.next();
-                if(entry.getValue()<3) {
-                    it.remove();
-                    allWords.remove(entry.getKey());
-                    classwords.remove(entry.getKey());
-
-                }
-            }
-        }
+//        for(int i=0;i<classes.size();i++)
+//        {
+//            LinkedHashMap<String,Double> map = this.wordCounts.get(classes.get(i));
+//            Iterator<Map.Entry<String,Double>> it = map.entrySet().iterator();
+//            HashSet<String> classwords = this.classDictionary.get(classes.get(i));
+//            while(it.hasNext()){
+//                Map.Entry<String,Double> entry = it.next();
+//                if(entry.getValue()<3) {
+//                    it.remove();
+//                    allWords.remove(entry.getKey());
+//                    classwords.remove(entry.getKey());
+//
+//                }
+//            }
+//        }
         for(int i=0;i<classes.size();i++)
             totalVocabularySize+=this.classDictionary.get(classes.get(i)).size();
         for(int i=0;i<classes.size();i++){ //for each class label
