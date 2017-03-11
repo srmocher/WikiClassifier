@@ -5,12 +5,12 @@ package com.teachastronomy;
  */
 public class Constants {
 
-    public static final String MainIndexLocation = "F:\\Indexes";
+    public static final String MainIndexLocation = "/home/sridhar/Indexes";
     public static final String TitleIndexLocation = "/home/sridhar/Indexes";
-    public static final String stopWordsFilePath ="D:\\stopWords.txt";
+    public static final String stopWordsFilePath ="/home/sridhar/stopWords.txt";
 
-    public static final String wikipediaStopWordsFile = "D:\\wikipediaStopWords.txt";
-    public static final String logFilePath = "D:\\logfile.txt";
+    public static final String wikipediaStopWordsFile = "/home/sridhar/wikipediaStopWords.txt";
+    public static final String logFilePath = "/home/sridharlogfile.txt";
 
     public static final String testDataPath = "/home/sridhar/Desktop/TestData";
     public static final String nonAstroTitlesPath = "/home/sridhar/Desktop/nonAstroDocs.txt";
@@ -18,7 +18,7 @@ public class Constants {
     public static final String nonAstroTitlesFilePath = "/home/sridhar/Desktop/nonAstroDocs.txt";
     public static final String astroTrainingDataPath =  "/home/sridhar/TrainingData/CS/";
     public static final String nonAstroTrainingDataPath = "/home/sridhar/NCS/";
-    public  static final String DumpFileLocation = "F:\\enwiki-latest-pages-articles.xml.bz2";
+    public  static final String DumpFileLocation = "/home/sridhar/enwiki-latest-pages-articles.xml.bz2";
 
     public static final String astronomy = "Astronomy";
     public static final String nonAstronomy = "Non Astronomy";
