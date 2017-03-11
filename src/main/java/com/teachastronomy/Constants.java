@@ -10,7 +10,7 @@ public class Constants {
     public static final String stopWordsFilePath ="/home/sridhar/stopWords.txt";
 
     public static final String wikipediaStopWordsFile = "/home/sridhar/wikipediaStopWords.txt";
-    public static final String logFilePath = "/home/sridharlogfile.txt";
+    public static final String logFilePath = "/home/sridhar/logfile.txt";
 
     public static final String testDataPath = "/home/sridhar/Desktop/TestData";
     public static final String nonAstroTitlesPath = "/home/sridhar/Desktop/nonAstroDocs.txt";
