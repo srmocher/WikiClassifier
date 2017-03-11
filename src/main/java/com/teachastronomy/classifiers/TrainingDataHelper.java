@@ -4,7 +4,6 @@ import com.teachastronomy.Constants;
 import com.teachastronomy.TextConverter;
 import com.teachastronomy.transformers.TfIdfTransformer;
 import com.teachastronomy.wikipedia.WikiArticle;
-import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.Term;
 import org.sweble.wikitext.engine.EngineException;
 import org.sweble.wikitext.engine.PageId;
@@ -161,7 +160,7 @@ public class TrainingDataHelper {
         ArrayList<WikiArticle> articles = new ArrayList<>();
         try {
 
-            File[] files = new File("/home/sridhar/TrainingData/A_old").listFiles();
+            File[] files = new File("F:\\TD\\A").listFiles();
 
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
@@ -170,7 +169,7 @@ public class TrainingDataHelper {
                 articles.add(article);
             }
 
-             files = new File("/home/sridhar/TD/NA").listFiles();
+             files = new File("F:\\TD\\NA").listFiles();
             int j=0;
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));

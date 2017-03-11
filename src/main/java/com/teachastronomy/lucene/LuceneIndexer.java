@@ -2,11 +2,12 @@ package com.teachastronomy.lucene;
 
 import com.teachastronomy.Constants;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.util.CharArraySet;
+
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
+
 import org.apache.lucene.store.SimpleFSDirectory;
+import org.apache.lucene.util.Version;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -17,10 +18,10 @@ import java.nio.file.Paths;
 public class LuceneIndexer {
 
     //static String indexPath = "/tadata/ewap/legacy/WikiParser/Indexes";
-    public CharArraySet stopWords;
+  //  public CharArraySet stopWords;
     IndexWriter writer;
     public LuceneIndexer(String indexFolder, String dirName){
-        stopWords = new CharArraySet(20,true);
+       // stopWords = new CharArraySet(20,true);
        // readStopWords();
         try{
             File dir = new File(indexFolder+"/"+dirName);
@@ -28,9 +29,8 @@ public class LuceneIndexer {
                 dir.mkdir();
             }
             StandardAnalyzer analyzer = new StandardAnalyzer();
-            IndexWriterConfig config = new IndexWriterConfig(analyzer);
-            config.setRAMBufferSizeMB(128);
-            writer = new IndexWriter(new SimpleFSDirectory(Paths.get(indexFolder+"/"+dirName)),config);
+
+            writer = new IndexWriter(new SimpleFSDirectory(new File(Constants.MainIndexLocation+"\\"+dirName)), new StandardAnalyzer(Version.LUCENE_29), true, IndexWriter.MaxFieldLength.LIMITED);
 
         }
         catch (IOException ioe){
@@ -39,28 +39,7 @@ public class LuceneIndexer {
         }
     }
 
-    public void readStopWords(){
-        try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Constants.wikipediaStopWordsFile)));
-            String s="";
-            while((s=br.readLine())!=null){
-                stopWords.add(s);
-            }
-            br.close();
 
-            BufferedReader sReader = new BufferedReader(new InputStreamReader(new FileInputStream(Constants.stopWordsFilePath)));
-
-            while((s=sReader.readLine())!=null){
-                stopWords.add(s);
-            }
-            br.close();
-            sReader.close();
-        }
-        catch (IOException ioe){
-            System.err.println(ioe.getMessage());
-            ioe.printStackTrace();
-        }
-    }
 
 
 

@@ -3,8 +3,7 @@ package com.teachastronomy.wikipedia;
 import com.teachastronomy.Constants;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
+
 
 import java.io.*;
 import java.util.ArrayList;
@@ -84,27 +83,7 @@ public class WikiArticle {
         }
         return null;
     }
-    public Document getFullDocument(){
-        Document d = new Document();
-        StringField id = new StringField("id",this.id, Field.Store.YES);
-        StringField title = new StringField("title",this.title, Field.Store.YES);
-        TextField text = new TextField("text",this.text, Field.Store.YES);
-        StringField timestamp = new StringField("timestamp",this.timestamp, Field.Store.YES);
-        d.add(id);
-        d.add(title);
-        d.add(text);
-        d.add(timestamp);
-        return  d;
-    }
 
-    public Document getTitleDocument(){
-        Document d = new Document();
-        StringField id = new StringField("id",this.id, Field.Store.YES);
-        StringField title = new StringField("title",this.title, Field.Store.YES);
-        d.add(id);
-        d.add(title);
-        return  d;
-    }
 
     public void addImage(WikiImage image){
         images.add(image);

@@ -5,12 +5,11 @@ import com.teachastronomy.Constants;
 import com.teachastronomy.Logger;
 import com.teachastronomy.classifiers.*;
 import com.teachastronomy.lucene.LuceneIndexer;
-import com.teachastronomy.lucene.LuceneReader;
+
 import com.teachastronomy.wikipedia.WikiArticle;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
@@ -196,17 +195,21 @@ public class WikiPageHandler extends DefaultHandler {
                            System.out.println(ttl+" - "+probs[0]+","+probs[1]);
                             n_ast++;//Increment astronomy count
                                //excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],decision);
-                        Document d = new Document();
-                        d.add(new StringField("id", ID, Field.Store.YES));
-                        d.add(new StringField("title", ttl, Field.Store.YES));
-                        d.add(new TextField("text", articleText, Field.Store.YES));
-                        d.add(new StringField("timestamp", time, Field.Store.YES));
-
-                                 indexer.saveDocument(d);
-
+                            Document d = new Document();
+                            Field lFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
+                            Field lFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.NO);
+                            Field lFtext = new Field("text", articleText, Field.Store.YES, Field.Index.NO);
+                            Field lFtimestamp = new Field("timestamp", time, Field.Store.YES, Field.Index.NO);
+                            d.add(lFId);
+                            d.add(lFtitle);
+                            d.add(lFtext);
+                            d.add(lFtimestamp);
+                            indexer.saveDocument(d);
                             Document titleDoc = new Document();
-                            titleDoc.add(new StringField("id",ID,Field.Store.YES));
-                            titleDoc.add(new StringField("title",ttl,Field.Store.YES));
+                            Field titlelFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
+                            Field titlelFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
+                            titleDoc.add(titlelFId);
+                            titleDoc.add(titlelFId);
                             titleIndexer.saveDocument(titleDoc);
                              //  astroWriter.write(ttl + ","+probs[0]+","+probs[1]+"\n");
                         } else {
@@ -219,14 +222,20 @@ public class WikiPageHandler extends DefaultHandler {
                     } else if (res == 1) { // Infobox article
                        // ClassificationResult result = classifier.classify(article);
                     Document d = new Document();
-                    d.add(new StringField("id", ID, Field.Store.YES));
-                    d.add(new StringField("title", ttl, Field.Store.YES));
-                    d.add(new TextField("text", articleText, Field.Store.YES));
-                    d.add(new StringField("timestamp", time, Field.Store.YES));
+                        Field lFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
+                        Field lFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.NO);
+                        Field lFtext = new Field("text", articleText, Field.Store.YES, Field.Index.NO);
+                        Field lFtimestamp = new Field("timestamp", time, Field.Store.YES, Field.Index.NO);
+                        d.add(lFId);
+                        d.add(lFtitle);
+                        d.add(lFtext);
+                        d.add(lFtimestamp);
                     indexer.saveDocument(d);
                         Document titleDoc = new Document();
-                        titleDoc.add(new StringField("id",ID,Field.Store.YES));
-                        titleDoc.add(new StringField("title",ttl,Field.Store.YES));
+                        Field titlelFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
+                        Field titlelFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
+                        titleDoc.add(titlelFId);
+                        titleDoc.add(titlelFId);
                         titleIndexer.saveDocument(titleDoc);
 
 //                    astroWriter.write(ttl + "\n");
