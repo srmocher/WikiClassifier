@@ -30,7 +30,7 @@ public class LuceneIndexer {
             }
             StandardAnalyzer analyzer = new StandardAnalyzer();
 
-            writer = new IndexWriter(new SimpleFSDirectory(new File(Constants.MainIndexLocation+"\\"+dirName)), new StandardAnalyzer(Version.LUCENE_29), true, IndexWriter.MaxFieldLength.LIMITED);
+            writer = new IndexWriter(new SimpleFSDirectory(new File(Constants.MainIndexLocation+"/"+dirName)), new StandardAnalyzer(Version.LUCENE_29), true, IndexWriter.MaxFieldLength.LIMITED);
 
         }
         catch (IOException ioe){
