@@ -6,6 +6,9 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
 
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
 
@@ -28,9 +31,9 @@ public class LuceneIndexer {
             if(!dir.exists()){
                 dir.mkdir();
             }
-            StandardAnalyzer analyzer = new StandardAnalyzer();
 
-            writer = new IndexWriter(new SimpleFSDirectory(new File(Constants.MainIndexLocation+"/"+dirName)), new StandardAnalyzer(Version.LUCENE_29), true, IndexWriter.MaxFieldLength.LIMITED);
+            Directory d = FSDirectory.open(Paths.get(Constants.MainIndexLocation+"\\"+dirName));
+            writer = new IndexWriter(d, new IndexWriterConfig(new StandardAnalyzer()));
 
         }
         catch (IOException ioe){
@@ -57,6 +60,7 @@ public class LuceneIndexer {
 
     public void close(){
         try{
+            writer.forceMerge(1);
             if(writer!=null)
                 writer.close();
         }

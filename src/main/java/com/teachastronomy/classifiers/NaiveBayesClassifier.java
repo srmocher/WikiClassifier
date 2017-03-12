@@ -427,7 +427,7 @@ public class NaiveBayesClassifier {
     }
     private static String stem(String text){ //use Porter stemmer algorithm
         PorterStemmer stemmer = new PorterStemmer();
-        stemmer.setCurrent(text.toLowerCase());
+        stemmer.setCurrent(text);
         stemmer.stem();
         return stemmer.getCurrent();
     }
