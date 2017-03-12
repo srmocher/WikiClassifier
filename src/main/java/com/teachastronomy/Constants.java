@@ -7,7 +7,7 @@ public class Constants {
 
     public static final String MainIndexLocation = "/home/sridharIndexes";
     public static final String TitleIndexLocation = "/home/sridhar/Indexes";
-    public static final String stopWordsFilePath ="D:\\stopWords.txt";
+    public static final String stopWordsFilePath ="/home/stopWords.txt";
 
     public static final String wikipediaStopWordsFile = "/home/sridhar/wikipediaStopWords.txt";
     public static final String logFilePath = "/home/sridhar/logfile.txt";
