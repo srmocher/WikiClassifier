@@ -32,7 +32,7 @@ public class LuceneIndexer {
                 dir.mkdir();
             }
 
-            Directory d = FSDirectory.open(Paths.get(Constants.MainIndexLocation+"\\"+dirName));
+            Directory d = FSDirectory.open(Paths.get(Constants.MainIndexLocation+"/"+dirName));
             writer = new IndexWriter(d, new IndexWriterConfig(new StandardAnalyzer()));
 
         }
