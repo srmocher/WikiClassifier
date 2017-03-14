@@ -191,18 +191,25 @@ public class WikiPageHandler extends DefaultHandler {
 
                     if (res == 0) {
 
+
                         if (result.equals("Astronomy")) {
+                            if(ttl.equals("Astronomy"))
+                            {
+                                int test=1;
+                            }
                            System.out.println(ttl+" - "+probs[0]+","+probs[1]);
                             n_ast++;//Increment astronomy count
                                //excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],decision);
                             Document d = new Document();
                             Field lFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
-                            Field lFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.NO);
+                            Field lFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
                             Field lFtext = new Field("text", articleText, Field.Store.YES, Field.Index.NO);
+                            Field cleanFtext = new Field("cleantext", article.getCleanText(), Field.Store.YES, Field.Index.ANALYZED);
                             Field lFtimestamp = new Field("timestamp", time, Field.Store.YES, Field.Index.NO);
                             d.add(lFId);
                             d.add(lFtitle);
                             d.add(lFtext);
+                            d.add(cleanFtext);
                             d.add(lFtimestamp);
                             indexer.saveDocument(d);
                             Document titleDoc = new Document();
@@ -225,9 +232,11 @@ public class WikiPageHandler extends DefaultHandler {
                         Field lFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
                         Field lFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.NO);
                         Field lFtext = new Field("text", articleText, Field.Store.YES, Field.Index.NO);
+                        Field cleanFtext = new Field("cleantext", article.getCleanText(), Field.Store.YES, Field.Index.NO);
                         Field lFtimestamp = new Field("timestamp", time, Field.Store.YES, Field.Index.NO);
                         d.add(lFId);
                         d.add(lFtitle);
+                        d.add(cleanFtext);
                         d.add(lFtext);
                         d.add(lFtimestamp);
                     indexer.saveDocument(d);

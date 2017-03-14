@@ -1,8 +1,10 @@
 package com.teachastronomy.wikipedia;
 
 import com.teachastronomy.Constants;
+import com.teachastronomy.classifiers.CustomStopWordsHandler;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import weka.core.tokenizers.WordTokenizer;
 
 
 import java.io.*;
@@ -68,13 +70,19 @@ public class WikiArticle {
             String temp =this.text;
 
             temp = temp.toLowerCase();
-            temp = temp.replaceAll("(<ref>).*?(<\\/ref>)", " ")
-                    .replaceAll("[^a-z]", " ");
-
-            for(String word:stopWords){
-                temp =temp.replace(word,"");
+            temp = temp.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
+            WordTokenizer tokenizer = new WordTokenizer();
+            tokenizer.tokenize(temp);
+            CustomStopWordsHandler handler = new CustomStopWordsHandler();
+            String cleantext="";
+            while(tokenizer.hasMoreElements())
+            {
+                String token = tokenizer.nextElement();
+                if(handler.isStopword(token))
+                    continue;
+                cleantext = cleantext + token+" ";
             }
-            return temp;
+            return cleantext;
         } catch (FileNotFoundException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();

@@ -322,8 +322,8 @@ public class NaiveBayesClassifier {
         this.tokenize(title.toLowerCase(),article.getCategory()); // get words
 
         String text = article.getText(); //get text
-        text = text.replaceAll("<ref.*</ref>"," ");
-        text = text.replaceAll("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"," ");
+       // text = text.replaceAll("<ref.*</ref>"," ");
+       // text = text.replaceAll("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"," ");
 
         text = text.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");//remove non letters and additional spaces
         this.tokenize(text.toLowerCase(),article.getCategory());//get words and store in vocabular
@@ -376,8 +376,8 @@ public class NaiveBayesClassifier {
         this.tokenize(title.toLowerCase(),words);
 
         String text = article.getText();
-        text = text.replaceAll("<ref.*</ref>"," ");
-        text = text.replaceAll("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"," ");
+      //  text = text.replaceAll("<ref.*</ref>"," ");
+       // text = text.replaceAll("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"," ");
         text = text.replaceAll("[^ a-zA-Z]", " ").replaceAll("\\s+", " ");
 
 
