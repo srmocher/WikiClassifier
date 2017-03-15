@@ -38,10 +38,11 @@ public class WikiPageHandler extends DefaultHandler {
     int n_infoboxes=0;
     static String ttl = "", time = "", ID = "", cat = "";
     String articleText = "";
+    int id_val=0;
     StringBuilder txt = new StringBuilder();
     static ArrayList<WikiArticle> wikiArticles = new ArrayList<>();
 
-
+    String previousTitle= "";
 
     Pattern imagePattern = Pattern.compile(":.*.(png|.jpg|.svg|.gif|.tiff)");
 
@@ -112,7 +113,8 @@ public class WikiPageHandler extends DefaultHandler {
         } else if (qName.equals("timestamp")) {
             timestamp = true;
         } else if (qName.equals("id")) {
-            id = true;
+            if(ID==null||ID.equals(""))
+                id = true;
         }
 
 
@@ -128,6 +130,7 @@ public class WikiPageHandler extends DefaultHandler {
         if (id) {
             ID = new String(chars, start, end);
             ;
+         //   System.out.println(ttl+"-"+ID);
             //  System.out.println("ID "+ID);
             id = false;
         }
@@ -193,10 +196,9 @@ public class WikiPageHandler extends DefaultHandler {
 
 
                         if (result.equals("Astronomy")) {
-                            if(ttl.equals("Astronomy"))
-                            {
-                                int test=1;
-                            }
+
+
+
                            System.out.println(ttl+" - "+probs[0]+","+probs[1]);
                             n_ast++;//Increment astronomy count
                                //excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],decision);
@@ -218,16 +220,25 @@ public class WikiPageHandler extends DefaultHandler {
                             titleDoc.add(titlelFId);
                             titleDoc.add(titlelFId);
                             titleIndexer.saveDocument(titleDoc);
+                            if(ttl.equals("Astronomy"))
+                            {
+                                indexer.close();
+                                titleIndexer.close();
+                                System.exit(0);
+                            }
+                            ID=null;
                              //  astroWriter.write(ttl + ","+probs[0]+","+probs[1]+"\n");
                         } else {
                              //    nonAstroWriter.write(ttl +","+probs[0]+","+probs[1]+"\n");
                           //  excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],0);
                             n_nast++;//Increment non astronomy count
+                            ID=null;
                         }
 
 
                     } else if (res == 1) { // Infobox article
                        // ClassificationResult result = classifier.classify(article);
+                        id_val++;
                     Document d = new Document();
                         Field lFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
                         Field lFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.NO);
@@ -246,7 +257,7 @@ public class WikiPageHandler extends DefaultHandler {
                         titleDoc.add(titlelFId);
                         titleDoc.add(titlelFId);
                         titleIndexer.saveDocument(titleDoc);
-
+                        ID=null;
 //                    astroWriter.write(ttl + "\n");
                         System.out.println(ttl+" - "+probs[0]+","+probs[1]+" Infobox");
                         //excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],1);//write probabilities
@@ -254,6 +265,7 @@ public class WikiPageHandler extends DefaultHandler {
                     } else {
                 //   nonAstroWriter.write(ttl+"\n");
                       // n_nast++;
+                        ID=null;
                     }
                 } catch (Exception e) {
                    System.out.println(e.getMessage());
