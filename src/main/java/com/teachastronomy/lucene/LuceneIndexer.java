@@ -60,6 +60,7 @@ public class LuceneIndexer {
 
     public void close(){
         try{
+            writer.commit();
             writer.forceMerge(1);
             if(writer!=null)
                 writer.close();

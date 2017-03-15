@@ -218,7 +218,7 @@ public class WikiPageHandler extends DefaultHandler {
                             Field titlelFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
                             Field titlelFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
                             titleDoc.add(titlelFId);
-                            titleDoc.add(titlelFId);
+                            titleDoc.add(titlelFtitle);
                             titleIndexer.saveDocument(titleDoc);
                             if(ttl.equals("Astronomy"))
                             {
@@ -255,7 +255,7 @@ public class WikiPageHandler extends DefaultHandler {
                         Field titlelFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
                         Field titlelFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
                         titleDoc.add(titlelFId);
-                        titleDoc.add(titlelFId);
+                        titleDoc.add(titlelFtitle);
                         titleIndexer.saveDocument(titleDoc);
                         ID=null;
 //                    astroWriter.write(ttl + "\n");
