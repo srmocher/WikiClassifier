@@ -220,12 +220,7 @@ public class WikiPageHandler extends DefaultHandler {
                             titleDoc.add(titlelFId);
                             titleDoc.add(titlelFtitle);
                             titleIndexer.saveDocument(titleDoc);
-                            if(ttl.equals("Astronomy"))
-                            {
-                                indexer.close();
-                                titleIndexer.close();
-                                System.exit(0);
-                            }
+                          
                             ID=null;
                              //  astroWriter.write(ttl + ","+probs[0]+","+probs[1]+"\n");
                         } else {
