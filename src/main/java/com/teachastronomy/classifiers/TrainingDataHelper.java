@@ -160,21 +160,21 @@ public class TrainingDataHelper {
         ArrayList<WikiArticle> articles = new ArrayList<>();
         try {
 
-            File[] files = new File("/home/sridhar/TD/A").listFiles();
+            File[] files = new File("/home/sridhar/TrainingData/Econ").listFiles();
 
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
                 WikiArticle article = new WikiArticle(text,null,f.getName(),null);
-                article.setCategory("Astronomy");
+                article.setCategory("P");
                 articles.add(article);
             }
 
-             files = new File("/home/sridhar/TD/NA").listFiles();
+             files = new File("/home/sridhar/TrainingData/NE_new").listFiles();
             int j=0;
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
                 WikiArticle article = new WikiArticle(text,null,f.getName(),null);
-                article.setCategory("Non Astronomy");
+                article.setCategory("NP");
                 articles.add(article);
                 j++;
 

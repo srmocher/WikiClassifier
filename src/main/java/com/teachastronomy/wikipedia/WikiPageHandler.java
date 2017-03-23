@@ -71,8 +71,8 @@ public class WikiPageHandler extends DefaultHandler {
             //classifier = new NBClassifier();
            //classifier.trainUsingWEKA();
             ArrayList<String> classes = new ArrayList<>();
-            classes.add("Astronomy");
-            classes.add("Non Astronomy");
+            classes.add("P");
+            classes.add("NP");
             ast_probs = new ArrayList<>();
             nast_probs = new ArrayList<>();
 //          //  classifier = new NaiveBayesBernoulli(classes);
@@ -91,7 +91,7 @@ public class WikiPageHandler extends DefaultHandler {
             count=0;
 
           //  reader = new LuceneReader(Constants.MainIndexLocation + "/astronomyIndex2");
-//            astroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Constants.astroLogFile)));
+            astroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/sridhar/psychology.txt")));
    //         nonAstroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Constants.nonAstroLogFile)));
 
         } catch (Exception e) {
@@ -187,42 +187,40 @@ public class WikiPageHandler extends DefaultHandler {
                     double[] probs = classifier.getProbabilities(article);
 
                     int decision=1;
-                    if(result.equals("Astronomy"))
-                        decision=1;
-                    else decision=0;
+
                     //store result in excel
 
                     if (res == 0) {
 
 
-                        if (result.equals("Astronomy")) {
+                        if (result.equals("P")) {
 
 
 
                            System.out.println(ttl+" - "+probs[0]+","+probs[1]);
                             n_ast++;//Increment astronomy count
                                //excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],decision);
-                            Document d = new Document();
-                            Field lFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
-                            Field lFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
-                            Field lFtext = new Field("text", articleText, Field.Store.YES, Field.Index.NO);
-                            Field cleanFtext = new Field("cleantext", article.getCleanText(), Field.Store.YES, Field.Index.ANALYZED);
-                            Field lFtimestamp = new Field("timestamp", time, Field.Store.YES, Field.Index.NO);
-                            d.add(lFId);
-                            d.add(lFtitle);
-                            d.add(lFtext);
-                            d.add(cleanFtext);
-                            d.add(lFtimestamp);
-                            indexer.saveDocument(d);
-                            Document titleDoc = new Document();
-                            Field titlelFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
-                            Field titlelFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
-                            titleDoc.add(titlelFId);
-                            titleDoc.add(titlelFtitle);
-                            titleIndexer.saveDocument(titleDoc);
-                          
+//                            Document d = new Document();
+//                            Field lFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
+//                            Field lFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
+//                            Field lFtext = new Field("text", articleText, Field.Store.YES, Field.Index.NO);
+//                            Field cleanFtext = new Field("cleantext", article.getCleanText(), Field.Store.YES, Field.Index.ANALYZED);
+//                            Field lFtimestamp = new Field("timestamp", time, Field.Store.YES, Field.Index.NO);
+//                            d.add(lFId);
+//                            d.add(lFtitle);
+//                            d.add(lFtext);
+//                            d.add(cleanFtext);
+//                            d.add(lFtimestamp);
+//                            indexer.saveDocument(d);
+//                            Document titleDoc = new Document();
+//                            Field titlelFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
+//                            Field titlelFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
+//                            titleDoc.add(titlelFId);
+//                            titleDoc.add(titlelFtitle);
+//                            titleIndexer.saveDocument(titleDoc);
+
                             ID=null;
-                             //  astroWriter.write(ttl + ","+probs[0]+","+probs[1]+"\n");
+                              astroWriter.write(ttl + ","+probs[0]+","+probs[1]+"\n");
                         } else {
                              //    nonAstroWriter.write(ttl +","+probs[0]+","+probs[1]+"\n");
                           //  excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],0);
@@ -233,28 +231,28 @@ public class WikiPageHandler extends DefaultHandler {
 
                     } else if (res == 1) { // Infobox article
                        // ClassificationResult result = classifier.classify(article);
-                        id_val++;
-                    Document d = new Document();
-                        Field lFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
-                        Field lFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.NO);
-                        Field lFtext = new Field("text", articleText, Field.Store.YES, Field.Index.NO);
-                        Field cleanFtext = new Field("cleantext", article.getCleanText(), Field.Store.YES, Field.Index.NO);
-                        Field lFtimestamp = new Field("timestamp", time, Field.Store.YES, Field.Index.NO);
-                        d.add(lFId);
-                        d.add(lFtitle);
-                        d.add(cleanFtext);
-                        d.add(lFtext);
-                        d.add(lFtimestamp);
-                    indexer.saveDocument(d);
-                        Document titleDoc = new Document();
-                        Field titlelFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
-                        Field titlelFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
-                        titleDoc.add(titlelFId);
-                        titleDoc.add(titlelFtitle);
-                        titleIndexer.saveDocument(titleDoc);
+
+//                    Document d = new Document();
+//                        Field lFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
+//                        Field lFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.NO);
+//                        Field lFtext = new Field("text", articleText, Field.Store.YES, Field.Index.NO);
+//                        Field cleanFtext = new Field("cleantext", article.getCleanText(), Field.Store.YES, Field.Index.NO);
+//                        Field lFtimestamp = new Field("timestamp", time, Field.Store.YES, Field.Index.NO);
+//                        d.add(lFId);
+//                        d.add(lFtitle);
+//                        d.add(cleanFtext);
+//                        d.add(lFtext);
+//                        d.add(lFtimestamp);
+//                    indexer.saveDocument(d);
+//                        Document titleDoc = new Document();
+//                        Field titlelFId = new Field("id", ID, Field.Store.YES, Field.Index.NOT_ANALYZED);
+//                        Field titlelFtitle = new Field("title", ttl, Field.Store.YES, Field.Index.ANALYZED);
+//                        titleDoc.add(titlelFId);
+//                        titleDoc.add(titlelFtitle);
+//                        titleIndexer.saveDocument(titleDoc);
                         ID=null;
 //                    astroWriter.write(ttl + "\n");
-                        System.out.println(ttl+" - "+probs[0]+","+probs[1]+" Infobox");
+                       // System.out.println(ttl+" - "+probs[0]+","+probs[1]+" Infobox");
                         //excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],1);//write probabilities
                       //  n_ast++;//increment count
                     } else {
@@ -281,7 +279,8 @@ public class WikiPageHandler extends DefaultHandler {
         System.out.println("Total non astronomy - " + n_nast);
         System.out.println("Total infoboxes "+n_infoboxes);
         try {
-//    astroWriter.close();
+            astroWriter.flush();
+       astroWriter.close();
          //  nonAstroWriter.close();
           // excelLogger.saveExcel();
          //   classifier.closeLogger();;
