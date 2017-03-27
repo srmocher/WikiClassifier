@@ -110,9 +110,10 @@ public class WikiPageHandler extends DefaultHandler {
             while((s=reader.readLine())!=null){
                 astroArticles.add(s);
             }
+            reader.close();
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 
