@@ -72,7 +72,7 @@ public class WikiPageHandler extends DefaultHandler {
             astroArticles = new HashSet<>();
 
 
-
+            readAstroArticles();
             articles = new ArrayList<>();
             count=0;
 
