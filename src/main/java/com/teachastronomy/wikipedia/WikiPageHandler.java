@@ -105,7 +105,7 @@ public class WikiPageHandler extends DefaultHandler {
 
     private void readAstroArticles(){
         try{
-            BufferedReader reader = new BufferedReader(new FileReader("/home/sridhar/SVM-1.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("/home/sridhar/SVM1.txt"));
             String s = "";
             while((s=reader.readLine())!=null){
                 astroArticles.add(s);
