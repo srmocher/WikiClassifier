@@ -55,7 +55,7 @@ public class TrainingDataHelper {
                 s = stem(s);
                 inst.setValue(0, s);
                 inst.setValue(1, text);
-                inst.setClassValue("CS");
+                inst.setClassValue("D");
                 trainingSet.add(inst);
             }
 
@@ -91,7 +91,7 @@ public class TrainingDataHelper {
                     s = stem(s);
                     inst.setValue(0, s);
                     inst.setValue(1, text);
-                    inst.setClassValue("Non Astronomy");
+                    inst.setClassValue("ND");
                     trainingSet.add(inst);
                 }
 
@@ -106,8 +106,8 @@ public class TrainingDataHelper {
       //  titleAttribute.setWeight(2);
         Attribute textAttribute = new Attribute("text",(FastVector)null);
         ArrayList<String> classes = new ArrayList<>();
-        classes.add("Astronomy");
-        classes.add("Non Astronomy");
+        classes.add("D");
+        classes.add("ND");
         Attribute classAttribute = new Attribute("@@class@@",classes);
         ArrayList<Attribute> attributes = new ArrayList<>();
         attributes.add(titleAttribute);
@@ -160,21 +160,21 @@ public class TrainingDataHelper {
         ArrayList<WikiArticle> articles = new ArrayList<>();
         try {
 
-            File[] files = new File("/home/sridhar/TrainingData/A").listFiles();
+            File[] files = new File("/home/sridhar/TrainingData/Dance").listFiles();
 
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
                 WikiArticle article = new WikiArticle(text,null,f.getName(),null);
-                article.setCategory("Astronomy");
+                article.setCategory("D");
                 articles.add(article);
             }
 
-             files = new File("/home/sridhar/TrainingData/NA").listFiles();
+             files = new File("/home/sridhar/TrainingData/ND").listFiles();
             int j=0;
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
                 WikiArticle article = new WikiArticle(text,null,f.getName(),null);
-                article.setCategory("Non Astronomy");
+                article.setCategory("ND");
                 articles.add(article);
                 j++;
 
