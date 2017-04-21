@@ -77,8 +77,8 @@ public class WikiPageHandler extends DefaultHandler {
             count=0;
 
             ArrayList<String> classes = new ArrayList<>();
-            classes.add("D");
-            classes.add("ND");
+            classes.add("R");
+            classes.add("NR");
             ast_probs = new ArrayList<>();
             nast_probs = new ArrayList<>();
 //          //  classifier = new NaiveBayesBernoulli(classes);
@@ -94,7 +94,7 @@ public class WikiPageHandler extends DefaultHandler {
             count=0;
 
           //  reader = new LuceneReader(Constants.MainIndexLocation + "/astronomyIndex2");
-            astroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/sridhar/dance.txt")));
+            astroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/sridhar/religion.txt")));
    //         nonAstroWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Constants.nonAstroLogFile)));
 
         } catch (Exception e) {
@@ -196,7 +196,7 @@ public class WikiPageHandler extends DefaultHandler {
                     if (res == 0) {
 
 
-                        if (result.equals("D")) {
+                        if (result.equals("R")) {
 
 
                         System.out.println(ttl);
