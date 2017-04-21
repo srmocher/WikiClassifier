@@ -199,7 +199,7 @@ public class WikiPageHandler extends DefaultHandler {
                         if (result.equals("R")) {
 
 
-                        System.out.println(ttl);
+                        System.out.println(ttl+","+probs[0]+","+probs[1]);
                         //   System.out.println(ttl+" - "+probs[0]+","+probs[1]);
                             n_ast++;//Increment astronomy count
 //                               //excelLogger.writeToExcelSheet(ttl,probs[0],probs[1],decision);
