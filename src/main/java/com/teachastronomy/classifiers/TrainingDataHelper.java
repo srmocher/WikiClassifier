@@ -67,7 +67,7 @@ public class TrainingDataHelper {
 
     public static void buildNonAstInstances(Instances trainingSet){
         try{
-            File[] files = new File("/home/sridhar/TrainingData/NCS").listFiles();
+            File[] files = new File("F:\\TrainingData\\NCS").listFiles();
             for(File f:files) {
                     String s = f.getName();
                     //  s=s.replace(" ","_");
@@ -156,11 +156,11 @@ public class TrainingDataHelper {
         return stemmer.getCurrent();
     }
 
-    public static ArrayList<WikiArticle> getTrainingData(){
+    public static ArrayList<WikiArticle> getTrainingData(String cat){
         ArrayList<WikiArticle> articles = new ArrayList<>();
         try {
 
-            File[] files = new File("/home/sridhar/TrainingData/Religion").listFiles();
+            File[] files = new File("/home/sridhar/TrainingData/"+cat).listFiles();
 
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
@@ -169,7 +169,7 @@ public class TrainingDataHelper {
                 articles.add(article);
             }
 
-             files = new File("/home/sridhar/TrainingData/NR").listFiles();
+             files = new File("/home/sridhar/TrainingData/Non "+cat).listFiles();
             int j=0;
             for(File f:files){
                 String text = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
