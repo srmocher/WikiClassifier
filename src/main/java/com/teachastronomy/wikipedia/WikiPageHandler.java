@@ -94,7 +94,7 @@ public class WikiPageHandler extends DefaultHandler {
             for(int j=0;j<categories.length;j++) {
                 for(int k=0;k<27;k++) {
                     for (int i = 0; i < 10; i++) {
-                        astroWriter[j][k][i] = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/hone/sridhar/results/Dump-Results/" + categories[j] + "/"+(k+1)+"/" + (i + 1) + "Y.txt")));
+                        astroWriter[j][k][i] = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/sridhar/results/Dump-Results/" + categories[j] + "/"+(k+1)+"/" + (i + 1) + "Y.txt")));
                         nonAstroWriter[j][k][i] = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/sridhar/results/Dump-Results/" + categories[j] + "/"+(k+1)+"/" + (i + 1) + "N.txt")));
                     }
                 }
